@@ -58,4 +58,12 @@ export class HeroComponent implements OnInit {
 
     this.initAnimation();
   }
+
+  scrollToContact(event: Event) {
+    event.preventDefault();
+    const element = document.querySelector('#contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

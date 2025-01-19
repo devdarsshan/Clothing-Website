@@ -13,10 +13,10 @@ export class HeaderComponent implements OnInit {
   isScrolled = false;
 
   menuItems = [
-    { label: 'Products', path: '/products' },
-    { label: 'About Us', path: '/about' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'Contact Us', path: '/contact' }
+    { label: 'Home', path: '#home', isScroll: true },
+    { label: 'About Us', path: '#about', isScroll: true },    
+    { label: 'Products', path: '#products', isScroll: true },
+    { label: 'Contact Us', path: '#contact', isScroll: true }
   ];
 
   ngOnInit() {
@@ -29,5 +29,15 @@ export class HeaderComponent implements OnInit {
     // Change background when scrolled past 100vh
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     this.isScrolled = scrollPosition > window.innerHeight * 0.8; // Start transition at 10% of viewport height
+  }
+
+  scrollToSection(event: Event, path: string, isScroll: boolean) {
+    if (isScroll) {
+      event.preventDefault();
+      const element = document.querySelector(path);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   }
 }

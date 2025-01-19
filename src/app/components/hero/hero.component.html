@@ -1,4 +1,4 @@
-<section class="hero-section relative h-screen w-full overflow-hidden">
+<section id="home" class="hero-section relative h-screen w-full overflow-hidden">
   <div class="hero-bg"></div>
   
   <div class="relative z-10 container mx-auto h-full flex">
@@ -9,7 +9,7 @@
       <p class="hero-subtitle text-white text-lg max-w-[500px] leading-relaxed tracking-wide mb-8">
         Step into the future of fashion with Techwear—where cutting-edge design meets next-gen performance. Elevate your style with apparel engineered for the bold
       </p>
-      <button class="flex items-center justify-center space-x-2 bg-white/10 hover:bg-white/20 border border-white/30 rounded-full py-4 px-8 transition-all duration-300 group">
+      <button (click)="scrollToContact($event)" class="flex items-center justify-center space-x-2 bg-white/10 hover:bg-white/20 border border-white/30 rounded-full py-4 px-8 transition-all duration-300 group">
         <span class="text-white text-sm font-medium tracking-wider uppercase">Contact Us</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />

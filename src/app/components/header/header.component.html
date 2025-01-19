@@ -7,7 +7,10 @@
       
       <div class="flex-1 flex justify-center space-x-12">
         @for (item of menuItems; track item.label) {
-          <a [routerLink]="item.path" [ngClass]="{'text-black hover:text-gray-700': isScrolled, 'text-white hover:text-gray-300': !isScrolled}" class="transition-colors text-lg font-semibold tracking-tight uppercase">
+          <a [routerLink]="item.path" 
+             [ngClass]="{'text-black hover:text-gray-700': isScrolled, 'text-white hover:text-gray-300': !isScrolled}" 
+             class="transition-colors text-lg font-semibold tracking-tight uppercase"
+             (click)="scrollToSection($event, item.path, item.isScroll)">
             {{item.label}}
           </a>
         }
