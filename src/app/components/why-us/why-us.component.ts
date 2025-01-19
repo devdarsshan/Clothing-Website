@@ -1,11 +1,8 @@
-import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, AfterViewInit, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CSSPlugin } from 'gsap/CSSPlugin';
-
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
 @Component({
   selector: 'app-why-us',
@@ -15,7 +12,14 @@ gsap.registerPlugin(ScrollTrigger, CSSPlugin);
   styleUrl: './why-us.component.scss'
 })
 export class WhyUsComponent implements OnInit, AfterViewInit {
-  constructor(private el: ElementRef) {}
+  private isBrowser: boolean;
+
+  constructor(
+    private el: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   questions = [
     {
@@ -41,20 +45,26 @@ export class WhyUsComponent implements OnInit, AfterViewInit {
   ];
 
   ngOnInit() {
-    ScrollTrigger.refresh();
+    if (this.isBrowser) {
+      gsap.registerPlugin(ScrollTrigger, CSSPlugin);
+      ScrollTrigger.refresh();
+    }
   }
 
   ngAfterViewInit() {
-    // Ensure DOM is ready
-    requestAnimationFrame(() => {
-      this.initScrollAnimations();
-    });
+    if (this.isBrowser) {
+      setTimeout(() => {
+        this.initScrollAnimations();
+      }, 100);
+    }
   }
 
   private initScrollAnimations() {
     const aboutSection = this.el.nativeElement;
     const questionsContainer = aboutSection.querySelector('.questions-container');
     const scrollContainer = aboutSection.querySelector('.custom-scrollbar');
+
+    if (!questionsContainer || !scrollContainer) return;
 
     // Prevent direct scrolling on the right side and redirect to main page scroll
     scrollContainer.addEventListener('wheel', (e: WheelEvent) => {
@@ -78,19 +88,23 @@ export class WhyUsComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // First animate the fixed side
-    tl.fromTo(aboutSection.querySelector('.fixed-side'),
-      {
-        autoAlpha: 0,
-        y: 100
-      },
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 1,
-        ease: 'power2.out'
-      }
-    ).fromTo('.why-us-section', 
+    const fixedSide = aboutSection.querySelector('.fixed-side');
+    if (fixedSide) {
+      tl.fromTo(fixedSide,
+        {
+          autoAlpha: 0,
+          y: 100
+        },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power2.out'
+        }
+      );
+    }
+
+    tl.fromTo('.why-us-section', 
       {
         autoAlpha: 0
       },
@@ -123,7 +137,7 @@ export class WhyUsComponent implements OnInit, AfterViewInit {
     // Questions fade in animations
     const questionElements = aboutSection.querySelectorAll('.question-item');
     
-    questionElements.forEach((element: Element, index: number) => {
+    questionElements.forEach((element: Element) => {
       element.classList.add('gsap-init');
 
       gsap.fromTo(element, 
@@ -148,6 +162,8 @@ export class WhyUsComponent implements OnInit, AfterViewInit {
     });
 
     // Refresh ScrollTrigger after setup
-    ScrollTrigger.refresh();
+    if (this.isBrowser) {
+      ScrollTrigger.refresh();
+    }
   }
 }

@@ -1,9 +1,7 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-about',
@@ -12,8 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
-export class AboutComponent implements OnInit {
-  isBrowser: boolean;
+export class AboutComponent implements OnInit, AfterViewInit {
+  private isBrowser: boolean;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -21,12 +19,20 @@ export class AboutComponent implements OnInit {
 
   ngOnInit() {
     if (this.isBrowser) {
-      this.initAnimations();
+      gsap.registerPlugin(ScrollTrigger);
     }
   }
 
-  private initAnimations() {
-    // Animate hero section
+  ngAfterViewInit() {
+    if (this.isBrowser) {
+      setTimeout(() => {
+        this.initAnimations();
+      }, 100);
+    }
+  }
+
+  private initAnimations(): void {
+    // Animate hero content
     gsap.from('.hero-content', {
       opacity: 0,
       y: 30,
@@ -38,7 +44,7 @@ export class AboutComponent implements OnInit {
       }
     });
 
-    // Animate core value cards
+    // Animate core value cards with stagger
     gsap.from('.core-value-card', {
       opacity: 0,
       y: 30,
@@ -52,26 +58,34 @@ export class AboutComponent implements OnInit {
     });
 
     // Animate stats
+    this.initStatsAnimation();
+  }
+
+  private initStatsAnimation(): void {
     const stats = document.querySelectorAll('[data-value]');
+    
     stats.forEach(stat => {
-      const finalValue = parseInt(stat.getAttribute('data-value') || '0');
-      const isSustainable = stat.textContent?.includes('%');
-      
-      gsap.fromTo(stat, 
-        { textContent: '0' + (isSustainable ? '%' : '+') },
+      const finalValue = parseInt(stat.getAttribute('data-value') || '0', 10);
+      const text = stat.textContent || '';
+      const isSustainable = text.includes('%');
+
+      if (text === '24/7') return; // Skip animation for 24/7
+
+      gsap.fromTo(stat,
+        { textContent: '0' },
         {
-          duration: 2,
           textContent: finalValue,
-          snap: { textContent: 1 },
+          duration: 2,
           ease: 'power1.inOut',
-          onUpdate: function(this: any) {
-            const value = Math.round(this['targets']()[0].textContent);
-            this['targets']()[0].textContent = value + (isSustainable ? '%' : '+');
-          },
           scrollTrigger: {
             trigger: stat,
-            start: 'top 85%',
+            start: 'top center+=100',
             toggleActions: 'play none none reverse'
+          },
+          snap: { textContent: 1 },
+          onUpdate: function(this: any) {
+            const value = Math.round(this.targets()[0].textContent);
+            this.targets()[0].textContent = value + (isSustainable ? '%' : '+');
           }
         }
       );
