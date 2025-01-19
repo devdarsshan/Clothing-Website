@@ -1,0 +1,22 @@
+:host {
+  font-family: "Archivo Variable", "Archivo", sans-serif;
+}
+
+header {
+  letter-spacing: 0.05em;
+  padding: 1.5rem 0;
+  transition: all 0.3s ease-in-out;
+
+  &.bg-white {
+    padding: 1rem 0;
+  }
+}
+
+a {
+  font-variation-settings: "wght" 400;
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    font-variation-settings: "wght" 500;
+  }
+}

@@ -1,0 +1,29 @@
+.collection-showcase {
+  font-family: "Archivo Variable", "Archivo", sans-serif;
+}
+
+.category-card {
+  img {
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.customization-card {
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-5px);
+    
+    .w-16 {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .w-16 {
+    transition: background-color 0.3s ease-in-out;
+  }
+}

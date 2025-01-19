@@ -1,0 +1,25 @@
+<section class="why-us-section h-screen bg-white relative">
+  <div class="flex h-full">
+    <!-- Left half - Fixed title -->
+    <div class="w-1/2 h-full flex items-center pl-24">
+      <div class="fixed-side">
+        <h2 class="why-us-title text-black text-[110px] leading-[0.1]">
+          Why<br>Choose us ?
+        </h2>
+      </div>
+    </div>
+
+    <!-- Right half - Scrollable content -->
+    <div class="w-1/2 h-full overflow-y-auto custom-scrollbar">
+      <div class="questions-container pr-24 pt-32 pb-6">
+        @for (item of questions; track item.question) {
+          <div class="question-item">
+            <h3 class="text-black text-3xl font-semibold mb-2">{{item.question}}</h3>
+            <p class="text-[17px] leading-relaxed max-w-2xl mb-4">{{item.answer}}</p>
+            <div class="h-[2px] bg-black/10 mb-8" [class.hidden]="$last"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

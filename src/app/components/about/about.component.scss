@@ -1,0 +1,109 @@
+:root {
+  --fonts--headings: "Archivo Variable", "Archivo", sans-serif;
+  --fonts--paragraph: "Archivo Variable", "Archivo", sans-serif;
+  --color--paragraph-color: #6f6f6f;
+}
+
+.about-section {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  font-family: "Archivo Variable", "Archivo", sans-serif;
+}
+
+.fixed-side {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.custom-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: hidden; // Initially hidden  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.questions-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+}
+
+.question-item {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  h3 {
+    font-family: var(--fonts--headings);
+    font-variation-settings: "wdth" 125;
+    letter-spacing: -0.02em;
+    margin-bottom: 30px;
+  }
+
+  p {
+    font-family: var(--fonts--paragraph);
+    color: #6f6f6f;
+    font-variation-settings: "wdth" 115;
+    margin-bottom: 24px;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.5;
+    
+  }
+
+  &:last-child {
+    .divider {
+      display: none;
+    }
+  }
+
+  &.gsap-init {
+    opacity: 0;
+    transform: translateY(100px);
+    visibility: hidden;
+  }
+}
+
+.about-title {
+  line-height: 0.9;
+  font-family: var(--fonts--headings);
+  font-variation-settings: "wdth" 125;
+  letter-spacing: -0.02em;
+}
+
+.core-value-card {
+  transition: transform 0.3s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+// Hero image animation
+.aspect-\[4\/3\] {
+  img {
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover {
+    img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Stats animation
+.text-5xl {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    color: #000;
+  }
+}

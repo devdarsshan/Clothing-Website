@@ -1,0 +1,19 @@
+<header class="fixed w-full z-50 transition-all duration-300" [ngClass]="{'bg-white shadow-lg': isScrolled, 'bg-transparent': !isScrolled}">
+  <div class="max-w-[1440px] mx-auto px-12">
+    <div class="flex items-center">
+      <div [ngClass]="{'text-black': isScrolled, 'text-white': !isScrolled}" class="text-3xl font-bold tracking-wider w-[240px] transition-colors duration-300">
+        TECHWEAR
+      </div>
+      
+      <div class="flex-1 flex justify-center space-x-12">
+        @for (item of menuItems; track item.label) {
+          <a [routerLink]="item.path" [ngClass]="{'text-black hover:text-gray-700': isScrolled, 'text-white hover:text-gray-300': !isScrolled}" class="transition-colors text-lg font-semibold tracking-tight uppercase">
+            {{item.label}}
+          </a>
+        }
+      </div>
+      
+      <div class="w-[240px]"><!-- Spacer to balance the logo --></div>
+    </div>
+  </div>
+</header>
