@@ -1,5 +1,5 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, HostListener, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -11,28 +11,35 @@ import { RouterModule } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   isScrolled = false;
+  isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   menuItems = [
     { label: 'Home', path: '#home', isScroll: true },
-    { label: 'About Us', path: '#about', isScroll: true },    
     { label: 'Products', path: '#products', isScroll: true },
+    { label: 'About Us', path: '#about', isScroll: true },
     { label: 'Contact Us', path: '#contact', isScroll: true }
   ];
 
   ngOnInit() {
-    // Check initial scroll position
-    this.checkScroll();
+    if (this.isBrowser) {
+      this.checkScroll();
+    }
   }
 
   @HostListener('window:scroll', [])
   checkScroll() {
-    // Change background when scrolled past 100vh
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    this.isScrolled = scrollPosition > window.innerHeight * 0.8; // Start transition at 10% of viewport height
+    if (this.isBrowser) {
+      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      this.isScrolled = scrollPosition > window.innerHeight * 0.8;
+    }
   }
 
   scrollToSection(event: Event, path: string, isScroll: boolean) {
-    if (isScroll) {
+    if (isScroll && this.isBrowser) {
       event.preventDefault();
       const element = document.querySelector(path);
       if (element) {

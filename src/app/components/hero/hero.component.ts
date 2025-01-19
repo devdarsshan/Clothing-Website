@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { gsap } from 'gsap';
 
 @Component({
@@ -12,58 +12,47 @@ import { gsap } from 'gsap';
 export class HeroComponent implements OnInit {
   @ViewChild('heroContent') heroContent!: ElementRef;
   @ViewChild('techText') techText!: ElementRef;
+  isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
-    this.initAnimation();
-  }
-
-  private initAnimation() {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' }});
-    
-    // Initial zoom out animation for background
-    tl.to('.hero-bg', {
-      duration: 2,
-      scale: 1,
-      ease: 'power2.out'
-    });
-
-    // Fade in and slide up content
-    tl.to(this.heroContent.nativeElement, {
-      duration: 1,
-      opacity: 1,
-      y: 0,
-      ease: 'power4.out'
-    }, '-=1.5'); // Start slightly before bg animation ends
-
-    // Fade in the TECH WEAR text
-    tl.to(this.techText.nativeElement, {
-      duration: 1,
-      opacity: 1,
-      x: 0,
-      ease: 'power4.out'
-    }, '-=0.8');
-  }
-
-  ngAfterViewInit() {
-    // Set initial states
-    gsap.set(this.heroContent.nativeElement, {
-      opacity: 0,
-      y: 100
-    });
-    
-    gsap.set(this.techText.nativeElement, {
-      opacity: 0,
-      x: 100
-    });
-
-    this.initAnimation();
+    if (this.isBrowser) {
+      this.initAnimation();
+    }
   }
 
   scrollToContact(event: Event) {
-    event.preventDefault();
-    const element = document.querySelector('#contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (this.isBrowser) {
+      event.preventDefault();
+      const element = document.querySelector('#contact');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+  }
+
+  private initAnimation() {
+    // Wait for view initialization
+    setTimeout(() => {
+      // Hero content animation
+      gsap.to(this.heroContent.nativeElement, {
+        opacity: 1,
+        duration: 1,
+        delay: 0.5,
+        ease: 'power2.out'
+      });
+
+      // Tech text animation
+      gsap.to(this.techText.nativeElement, {
+        opacity: 1,
+        x: '-100px',
+        duration: 1,
+        delay: 0.8,
+        ease: 'power2.out'
+      });
+    }, 0);
   }
 }

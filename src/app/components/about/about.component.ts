@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,8 +13,16 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrl: './about.component.scss'
 })
 export class AboutComponent implements OnInit {
+  isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
   ngOnInit() {
-    this.initAnimations();
+    if (this.isBrowser) {
+      this.initAnimations();
+    }
   }
 
   private initAnimations() {
