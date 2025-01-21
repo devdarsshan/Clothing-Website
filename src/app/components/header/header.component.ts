@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent implements OnInit {
   isScrolled = false;
   isBrowser: boolean;
+  isMenuOpen = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -44,7 +45,12 @@ export class HeaderComponent implements OnInit {
       const element = document.querySelector(path);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
+        this.isMenuOpen = false; // Close menu after clicking
       }
     }
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

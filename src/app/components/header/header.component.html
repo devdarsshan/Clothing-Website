@@ -1,11 +1,34 @@
 <header class="fixed w-full z-50 transition-all duration-300" [ngClass]="{'bg-white shadow-lg': isScrolled, 'bg-transparent': !isScrolled}">
-  <div class="max-w-[1440px] mx-auto px-12">
-    <div class="flex items-center">
-      <div [ngClass]="{'text-black': isScrolled, 'text-white': !isScrolled}" class="text-3xl font-bold tracking-wider w-[240px] transition-colors duration-300">
-        TECHWEAR
+  <div class="max-w-[1440px] mx-auto px-4 md:px-12">
+    <div class="flex items-center justify-between h-16 md:h-auto">
+      <!-- Logo -->
+      <div [ngClass]="{'text-black': isScrolled, 'text-white': !isScrolled}" class="text-xl md:text-3xl font-bold tracking-wider transition-colors duration-300">
+        UNITEDCLOTHS
       </div>
       
-      <div class="flex-1 flex justify-center space-x-12">
+      <!-- Mobile menu button -->
+      <button 
+        class="md:hidden p-2 rounded-md"
+        [ngClass]="{'text-black': isScrolled, 'text-white': !isScrolled}"
+        (click)="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path 
+            *ngIf="!isMenuOpen"
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+            stroke-width="2" 
+            d="M4 6h16M4 12h16M4 18h16" />
+          <path 
+            *ngIf="isMenuOpen"
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+            stroke-width="2" 
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex flex-1 justify-center space-x-12">
         @for (item of menuItems; track item.label) {
           <a [routerLink]="item.path" 
              [ngClass]="{'text-black hover:text-gray-700': isScrolled, 'text-white hover:text-gray-300': !isScrolled}" 
@@ -14,9 +37,24 @@
             {{item.label}}
           </a>
         }
-      </div>
+      </nav>
       
-      <div class="w-[240px]"><!-- Spacer to balance the logo --></div>
+      <!-- Spacer for desktop -->
+      <div class="hidden md:block w-[240px]"></div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden" [ngClass]="{'block': isMenuOpen, 'hidden': !isMenuOpen}">
+      <div class="px-2 pt-2 pb-3 space-y-1" [ngClass]="{'bg-white': isScrolled, 'bg-black/50': !isScrolled}">
+        @for (item of menuItems; track item.label) {
+          <a [routerLink]="item.path" 
+             [ngClass]="{'text-black hover:text-gray-700': isScrolled, 'text-white hover:text-gray-300': !isScrolled}"
+             class="block px-3 py-2 text-base font-medium transition-colors"
+             (click)="scrollToSection($event, item.path, item.isScroll)">
+            {{item.label}}
+          </a>
+        }
+      </div>
     </div>
   </div>
 </header>

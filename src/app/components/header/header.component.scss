@@ -4,11 +4,15 @@
 
 header {
   letter-spacing: 0.05em;
-  padding: 1.5rem 0;
+  padding: 0.5rem 0;
   transition: all 0.3s ease-in-out;
 
-  &.bg-white {
-    padding: 1rem 0;
+  @media (min-width: 768px) {
+    padding: 1.5rem 0;
+    
+    &.bg-white {
+      padding: 1rem 0;
+    }
   }
 }
 
@@ -19,4 +23,9 @@ a {
   &:hover {
     font-variation-settings: "wght" 500;
   }
+}
+
+.mobile-menu {
+  transform-origin: top;
+  transition: all 0.3s ease-in-out;
 }
